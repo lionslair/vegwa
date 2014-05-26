@@ -1,0 +1,60 @@
+<?php
+
+// /**
+// * Implements hook_feeds_parser_sources_alter().
+// */
+// function vegwa_feeds_parser_sources_alter(&$sources, $content_type) {
+//   if ($content_type == 'organisations') {
+//     $sources['contact_id'] = array(
+//       'name' => t('Contacts\'s reference'),
+//       'description' => t('The node ID of the contact.'),
+//       'callback' => 'vegwa_get_contact_nid',
+//     );
+//   }
+// }
+
+// /**
+// * Implements hook_feeds_processor_targets_alter().
+// */
+// function vegwa_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+//   $targets['contact_entity_reference'] = array(
+//     'name' => 'Contact Entity Reference',
+//     'description' => 'the node reference for the partner',
+//     'real_target' => 'field_organisation_contact', // Specify real target field on node. This is on the content type.
+//     'callback' => 'vegwa_feeds_set_target',
+//     );
+// }
+
+// *
+// * Find the node id of the feed source and use it to find the associated person.
+
+// function vegwa_get_contact_nid(FeedsSource $source) {
+
+//   // query to get the ids of the persons
+
+//   dpm($source);
+
+//     $query = db_select('node', 'n');
+//     $results = $query->fields('n', array('nid'))
+//                     ->condition('n.type', 'contact','=')
+//                     ->condition('n.field_original_organisation_id', $source->field_original_organisation_id,'=')
+//                     ->execute()
+//                     ->fetchAllKeyed();
+
+//   $contact_nids = array_keys($results);
+
+//   // if ($feed->type == 'organisations') { //this needs to be the name of the importer content type.
+//   if (is_array($contact_nids) && !empty($contact_nids)) {
+//     return $contact_nids;
+//   } else {
+//     return null;
+//   }
+
+// }
+
+// /**
+// * Implements hook_feeds_set_target().
+// */
+// function vegwa_feeds_set_target($source, &$entity, $target, $value) {
+//   $entity->$target = $value;
+// }
