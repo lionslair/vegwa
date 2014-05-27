@@ -1,0 +1,17 @@
+name = Migrate VegWA
+description = Migrate module for VegWA
+core = 7.x
+package = VegWA
+
+; Information added by  packaging script on 2013-11-20
+version = "7.x"
+core = "7.x"
+project = "vegwa"
+
+dependencies[] = migrate
+dependencies[] = email
+dependencies[] = link
+dependencies[] = entityreference
+
+files[] = organisations.inc
+files[] = contacts.inc
