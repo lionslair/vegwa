@@ -10,7 +10,8 @@ function migrate_vegwa_migrate_api() {
       'api' => 2,
       'migrations' => array(
         'Organisations' => array('class_name' => 'OrganisationsMigration'),
-        'Contacts' => array('class_name' => 'ContactsMigration'),
+        'PriContact' => array('class_name' => 'PriContactMigration'),
+        'SecContact' => array('class_name' => 'SecContactMigration'),
       ),
       'field handlers' => array('MigrateEmailFieldHandler', 'MigrateLinkFieldHandler', 'MigrateEntityReferenceFieldHandler'),
   );

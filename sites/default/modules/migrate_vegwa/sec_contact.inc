@@ -1,11 +1,11 @@
 <?php
 
-class OrganisationsMigration extends Migration {
+class SecContactMigration extends Migration {
 
  public function __construct() {
   parent::__construct();
 
-  $this->description = t('Migrate data from the contact data into Organisations');
+  $this->description = t('Migrate data from the contact data into Contacts');
 
   $columns = array(
     0  => array('contact_id', 'Original contact id'),
@@ -85,7 +85,7 @@ class OrganisationsMigration extends Migration {
   );
 
   $this->source = new MigrateSourceCSV('/home/nathanr/Desktop/contact_data.csv', $columns);
-  $this->destination = new MigrateDestinationNode('organisation');
+  $this->destination = new MigrateDestinationNode('contact');
 
   $source_key = array(
     'nid' => array('type' => 'contact_id',
@@ -99,7 +99,7 @@ class OrganisationsMigration extends Migration {
   $this->map = new MigrateSQLMap($this->machineName, $source_key, MigrateDestinationNode::getKeySchema(), 'default');
 
     // core fields
-  $this->addFieldMapping('title', 'organisation');
+  $this->addFieldMapping('title', 'pri_firstname');
   $this->addFieldMapping('status')
   ->description('The status of the node. I believe this should be unplublished')
   ->defaultValue(0);
@@ -114,74 +114,26 @@ class OrganisationsMigration extends Migration {
     // $this->addFieldMapping('', '')
     //     ->description('');
 
-  $this->addFieldMapping('field_organisation', 'organisation');
-  $this->addFieldMapping('field_organisation_phone', 'org_phone');
-  $this->addFieldMapping('field_organisation_email', 'org_email');
-  $this->addFieldMapping('field_organisation_fax', 'org_fax');
-  $this->addFieldMapping('field_organisation_website', 'org_website');
-  $this->addFieldMapping('field_organisation_street', 'org_streetname');
-  $this->addFieldMapping('field_organisation_town', 'org_town');
-  $this->addFieldMapping('field_organisation_postcode', 'org_postcode');
-  $this->addFieldMapping('field_organisation_state', 'org_state');
-  $this->addFieldMapping('field_organisation_country', 'org_country');
-  $this->addFieldMapping('field_organisation_status', 'org_status');
-  $this->addFieldMapping('field_retail_markets', 'retail_markets');
-  $this->addFieldMapping('field_annual_turnover', 'annual_turnover');
-  $this->addFieldMapping('field_business_type', 'bussiness_type');
-
-  $this->addFieldMapping('field_crop_type', 'crop_type1');
-  $this->addFieldMapping('field_crop_type', 'crop_type2');
-  $this->addFieldMapping('field_crop_type', 'crop_type3');
-  $this->addFieldMapping('field_crop_type', 'crop_type4');
-  $this->addFieldMapping('field_crop_type', 'crop_type5');
-  $this->addFieldMapping('field_crop_type', 'crop_type6');
-  $this->addFieldMapping('field_crop_type', 'crop_type7');
-  $this->addFieldMapping('field_crop_type', 'crop_type8');
-  $this->addFieldMapping('field_crop_type', 'crop_type9');
-  $this->addFieldMapping('field_crop_type', 'crop_type10');
-  $this->addFieldMapping('field_crop_type', 'crop_type11');
-  $this->addFieldMapping('field_crop_type', 'crop_type12');
-
-  $this->addFieldMapping('field_hectares', 'hectares1');
-  $this->addFieldMapping('field_hectares', 'hectares2');
-  $this->addFieldMapping('field_hectares', 'hectares3');
-  $this->addFieldMapping('field_hectares', 'hectares4');
-  $this->addFieldMapping('field_hectares', 'hectares5');
-  $this->addFieldMapping('field_hectares', 'hectares6');
-  $this->addFieldMapping('field_hectares', 'hectares7');
-  $this->addFieldMapping('field_hectares', 'hectares8');
-  $this->addFieldMapping('field_hectares', 'hectares9');
-  $this->addFieldMapping('field_hectares', 'hectares10');
-  $this->addFieldMapping('field_hectares', 'hectares11');
-  $this->addFieldMapping('field_hectares', 'hectares12');
-
-  $this->addFieldMapping('field_water_source', 'watersource');
-  $this->addFieldMapping('field_hairrigated', 'harrigated');
-  $this->addFieldMapping('field_region', 'region');
-  $this->addFieldMapping('field_internet_connection_type', 'internet_con');
-  $this->addFieldMapping('field_viss', 'viss');
-  $this->addFieldMapping('field_wa_grower', 'wa_grower');
-  $this->addFieldMapping('field_enews', 'enews');
-  $this->addFieldMapping('field_organisation_preferences', 'preferences');
-  $this->addFieldMapping('field_organisation_note', 'notes');
-  $this->addFieldMapping('field_federal_electorate', 'federal_electorate');
-  $this->addFieldMapping('field_state_electorate', 'state_electorate');
-  $this->addFieldMapping('field_nesb', 'NESB');
-  $this->addFieldMapping('field_sms_notify', 'sms_notify');
-  $this->addFieldMapping('field_hard_copy', 'hard_copy');
+  $this->addFieldMapping('field_primary_contact')->defaultValue(1);
+  $this->addFieldMapping('field_contact_title', 'pri_title');
+  $this->addFieldMapping('field_contact_firstname', 'pri_firstname');
+  $this->addFieldMapping('field_contact_lastname', 'pri_lastname');
+  $this->addFieldMapping('field_contact_streetname', 'pri_streetname');
+  $this->addFieldMapping('field_contact_town', 'pri_town');
+  $this->addFieldMapping('field_contact_postcode', 'pri_postcode');
+  $this->addFieldMapping('field_contact_email', 'pri_email');
+  $this->addFieldMapping('field_contact_phone', 'pri_phone');
+  $this->addFieldMapping('field_contact_mobile', 'pri_mobile');
+  $this->addFieldMapping('field_contact_skype', 'pri_skype');
   $this->addFieldMapping('field_original_organisation_id', 'contact_id');
-
 
   /*
   * entity refernece mappings
   */
-  $this->addFieldMapping('field_organisation_contact', 'contact_id')
+  $this->addFieldMapping('field_contact_organisation', 'contact_id')
   ->description('The name of the main contact for this organisation')
-  ->sourceMigration('PriContact');
+  ->sourceMigration('VegwaOrganisation');
 
-  $this->addFieldMapping('field_organisation_contact', 'contact_id')
-  ->description('The name of the main contact for this organisation')
-  ->sourceMigration('SecContact');
 
     /*
     * Fields not to migrate
