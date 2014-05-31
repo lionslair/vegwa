@@ -4,6 +4,7 @@ class OrganisationsMigration extends Migration {
 
  public function __construct() {
   parent::__construct();
+  ini_set('auto_detect_line_endings', TRUE);
 
   $this->description = t('Migrate data from the contact data into Organisations');
 
@@ -84,31 +85,28 @@ class OrganisationsMigration extends Migration {
     73 => array('hard_copy','Hard Copy'),
   );
 
-  $this->source = new MigrateSourceCSV('/home/nathanr/Desktop/contact_data.csv', $columns);
+  $csv_file_path = variable_get('file_public_path', conf_path() . '/files/');
+  // dpm(DRUPAL_ROOT .'/'. $csv_file_path);
+  $this->source = new MigrateSourceCSV(DRUPAL_ROOT .'/'. $csv_file_path . '/contact_data.csv', $columns, array('header_rows' => 1));
   $this->destination = new MigrateDestinationNode('organisation');
 
   $source_key = array(
-    'nid' => array('type' => 'contact_id',
-      'unsigned' => TRUE,
-      'not null' => TRUE,
-      'description' => 'The Node ID of the original node',
-      'alias' => 'n',
-      ),
-    );
+    'contact_id' => array(
+                          'type' => 'varchar',
+                          'length' => 3,
+                          'not null' => TRUE,
+                          'description' => t('The ID of the original record'),
+                        ),
+  );
 
   $this->map = new MigrateSQLMap($this->machineName, $source_key, MigrateDestinationNode::getKeySchema(), 'default');
 
     // core fields
   $this->addFieldMapping('title', 'organisation');
-  $this->addFieldMapping('status')
-  ->description('The status of the node. I believe this should be unplublished')
-  ->defaultValue(0);
-  $this->addFieldMapping('uid')
-  ->description('The user id of the owner of the node');
-  $this->addFieldMapping('created')
-  ->description('Date Time When the node was created');
-  $this->addFieldMapping('changed')
-  ->description('Date time when the node was changed');
+  $this->addFieldMapping('status')->description('The status of the node. I believe this should be unplublished')->defaultValue(0);
+  $this->addFieldMapping('uid')->description('The user id of the owner of the node')->defaultValue(1);
+  // $this->addFieldMapping('created')->description('Date Time When the node was created');
+  // $this->addFieldMapping('changed')->description('Date time when the node was changed');
 
 
     // $this->addFieldMapping('', '')
@@ -129,31 +127,11 @@ class OrganisationsMigration extends Migration {
   $this->addFieldMapping('field_annual_turnover', 'annual_turnover');
   $this->addFieldMapping('field_business_type', 'bussiness_type');
 
-  $this->addFieldMapping('field_crop_type', 'crop_type1');
-  $this->addFieldMapping('field_crop_type', 'crop_type2');
-  $this->addFieldMapping('field_crop_type', 'crop_type3');
-  $this->addFieldMapping('field_crop_type', 'crop_type4');
-  $this->addFieldMapping('field_crop_type', 'crop_type5');
-  $this->addFieldMapping('field_crop_type', 'crop_type6');
-  $this->addFieldMapping('field_crop_type', 'crop_type7');
-  $this->addFieldMapping('field_crop_type', 'crop_type8');
-  $this->addFieldMapping('field_crop_type', 'crop_type9');
-  $this->addFieldMapping('field_crop_type', 'crop_type10');
-  $this->addFieldMapping('field_crop_type', 'crop_type11');
-  $this->addFieldMapping('field_crop_type', 'crop_type12');
+  $this->addFieldMapping('field_crop_type', 'crop_types')
+       ->separator(',');
 
-  $this->addFieldMapping('field_hectares', 'hectares1');
-  $this->addFieldMapping('field_hectares', 'hectares2');
-  $this->addFieldMapping('field_hectares', 'hectares3');
-  $this->addFieldMapping('field_hectares', 'hectares4');
-  $this->addFieldMapping('field_hectares', 'hectares5');
-  $this->addFieldMapping('field_hectares', 'hectares6');
-  $this->addFieldMapping('field_hectares', 'hectares7');
-  $this->addFieldMapping('field_hectares', 'hectares8');
-  $this->addFieldMapping('field_hectares', 'hectares9');
-  $this->addFieldMapping('field_hectares', 'hectares10');
-  $this->addFieldMapping('field_hectares', 'hectares11');
-  $this->addFieldMapping('field_hectares', 'hectares12');
+  $this->addFieldMapping('field_hectares', 'hectares')
+       ->separator(',');
 
   $this->addFieldMapping('field_water_source', 'watersource');
   $this->addFieldMapping('field_hairrigated', 'harrigated');
@@ -177,11 +155,7 @@ class OrganisationsMigration extends Migration {
   */
   $this->addFieldMapping('field_organisation_contact', 'contact_id')
   ->description('The name of the main contact for this organisation')
-  ->sourceMigration('PriContact');
-
-  $this->addFieldMapping('field_organisation_contact', 'contact_id')
-  ->description('The name of the main contact for this organisation')
-  ->sourceMigration('SecContact');
+  ->sourceMigration(array('PriContact', 'SecContact'));
 
     /*
     * Fields not to migrate
@@ -191,32 +165,42 @@ class OrganisationsMigration extends Migration {
 
   public function prepare($entity, $row) {
     // dd($row, 'Invoice row');
-    // dd($entity);
-    /**
-     *  lets prepare the type
-     */
-    // $invoice_status = NULL;
 
-    // if ($row->draft == 1) {
-    //   $invoice_status = 'Pending';
-    // }
+    $crop_types = '';
 
-    // if ($row->draft == 0) {
-    //   $invoice_status = 'Invoiced';
-    // }
+    if (!empty($row->crop_type1)) { $crop_types .= $row->crop_type1.','; }
+    if (!empty($row->crop_type2)) { $crop_types .= $row->crop_type2.','; }
+    if (!empty($row->crop_type3)) { $crop_types .= $row->crop_type3.','; }
+    if (!empty($row->crop_type4)) { $crop_types .= $row->crop_type4.','; }
+    if (!empty($row->crop_type5)) { $crop_types .= $row->crop_type5.','; }
+    if (!empty($row->crop_type6)) { $crop_types .= $row->crop_type6.','; }
+    if (!empty($row->crop_type7)) { $crop_types .= $row->crop_type7.','; }
+    if (!empty($row->crop_type8)) { $crop_types .= $row->crop_type8.','; }
+    if (!empty($row->crop_type9)) { $crop_types .= $row->crop_type9.','; }
+    if (!empty($row->crop_type10)) { $crop_types .= $row->crop_type10.','; }
+    if (!empty($row->crop_type11)) { $crop_types .= $row->crop_type11.','; }
+    if (!empty($row->crop_type12)) { $crop_types .= $row->crop_type12.','; }
 
-    // if ($row->paymentdate !=0) {
-    //   $invoice_status = 'Paid';
-    // }
+    $crop_types = substr($crop_types, 0,-1);
+    $row->crop_types = $crop_types;
 
-    // $entity->field_status[LANGUAGE_NONE][0]['value'] = $invoice_status;
+    $hectares = '';
 
-    // $gst_invoice = 1;
-    // if (intval($row->tax1) == 0) {
-    //   $gst_invoice = 0;
-    // }
+    if (!empty($row->hectares1)) { $hectares .= $row->hectares1.','; }
+    if (!empty($row->hectares2)) { $hectares .= $row->hectares2.','; }
+    if (!empty($row->hectares3)) { $hectares .= $row->hectares3.','; }
+    if (!empty($row->hectares4)) { $hectares .= $row->hectares4.','; }
+    if (!empty($row->hectares5)) { $hectares .= $row->hectares5.','; }
+    if (!empty($row->hectares6)) { $hectares .= $row->hectares6.','; }
+    if (!empty($row->hectares7)) { $hectares .= $row->hectares7.','; }
+    if (!empty($row->hectares8)) { $hectares .= $row->hectares8.','; }
+    if (!empty($row->hectares9)) { $hectares .= $row->hectares9.','; }
+    if (!empty($row->hectares10)) { $hectares .= $row->hectares10.','; }
+    if (!empty($row->hectares11)) { $hectares .= $row->hectares11.','; }
+    if (!empty($row->hectares12)) { $hectares .= $row->hectares12.','; }
 
-    // $entity->field_gst_invoice[LANGUAGE_NONE][0]['value'] = $gst_invoice;
+    $hectares = substr($hectares, 0,-1);
+    $row->hectares = $hectares;
 
     return TRUE;
   }

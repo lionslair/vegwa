@@ -84,17 +84,19 @@ class SecContactMigration extends Migration {
     73 => array('hard_copy','Hard Copy'),
   );
 
-  $this->source = new MigrateSourceCSV('/home/nathanr/Desktop/contact_data.csv', $columns);
+  $csv_file_path = variable_get('file_public_path', conf_path() . '/files/');
+  // dpm(DRUPAL_ROOT .'/'. $csv_file_path);
+  $this->source = new MigrateSourceCSV(DRUPAL_ROOT .'/'. $csv_file_path . '/contact_data.csv', $columns, array('header_rows' => 1));
   $this->destination = new MigrateDestinationNode('contact');
 
   $source_key = array(
-    'nid' => array('type' => 'contact_id',
-      'unsigned' => TRUE,
-      'not null' => TRUE,
-      'description' => 'The Node ID of the original node',
-      'alias' => 'n',
-      ),
-    );
+    'contact_id' => array(
+                          'type' => 'varchar',
+                          'length' => 3,
+                          'not null' => TRUE,
+                          'description' => t('The ID of the original record'),
+                        ),
+  );
 
   $this->map = new MigrateSQLMap($this->machineName, $source_key, MigrateDestinationNode::getKeySchema(), 'default');
 
@@ -125,7 +127,8 @@ class SecContactMigration extends Migration {
   $this->addFieldMapping('field_contact_phone', 'pri_phone');
   $this->addFieldMapping('field_contact_mobile', 'pri_mobile');
   $this->addFieldMapping('field_contact_skype', 'pri_skype');
-  $this->addFieldMapping('field_original_organisation_id', 'contact_id');
+  $this->addFieldMapping('field_original_organisation_id', 'contact_id')
+       ->sourceMigration(array('Organisations'));
 
   /*
   * entity refernece mappings
