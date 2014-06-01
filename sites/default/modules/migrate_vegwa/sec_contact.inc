@@ -92,7 +92,7 @@ class SecContactMigration extends Migration {
   $source_key = array(
     'contact_id' => array(
                           'type' => 'varchar',
-                          'length' => 3,
+                          'length' => 6,
                           'not null' => TRUE,
                           'description' => t('The ID of the original record'),
                         ),
@@ -135,7 +135,7 @@ class SecContactMigration extends Migration {
   */
   $this->addFieldMapping('field_contact_organisation', 'contact_id')
   ->description('The name of the main contact for this organisation')
-  ->sourceMigration('VegwaOrganisation');
+  ->sourceMigration('Organisations');
 
 
     /*

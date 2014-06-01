@@ -93,7 +93,7 @@ class OrganisationsMigration extends Migration {
   $source_key = array(
     'contact_id' => array(
                           'type' => 'varchar',
-                          'length' => 3,
+                          'length' => 6,
                           'not null' => TRUE,
                           'description' => t('The ID of the original record'),
                         ),
