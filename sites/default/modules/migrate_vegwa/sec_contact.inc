@@ -116,17 +116,17 @@ class SecContactMigration extends Migration {
     // $this->addFieldMapping('', '')
     //     ->description('');
 
-  $this->addFieldMapping('field_primary_contact')->defaultValue(1);
-  $this->addFieldMapping('field_contact_title', 'pri_title');
-  $this->addFieldMapping('field_contact_firstname', 'pri_firstname');
-  $this->addFieldMapping('field_contact_lastname', 'pri_lastname');
-  $this->addFieldMapping('field_contact_streetname', 'pri_streetname');
-  $this->addFieldMapping('field_contact_town', 'pri_town');
-  $this->addFieldMapping('field_contact_postcode', 'pri_postcode');
-  $this->addFieldMapping('field_contact_email', 'pri_email');
-  $this->addFieldMapping('field_contact_phone', 'pri_phone');
-  $this->addFieldMapping('field_contact_mobile', 'pri_mobile');
-  $this->addFieldMapping('field_contact_skype', 'pri_skype');
+  $this->addFieldMapping('field_primary_contact')->defaultValue(0);
+  $this->addFieldMapping('field_contact_title', 'sec_title');
+  $this->addFieldMapping('field_contact_firstname', 'sec_firstname');
+  $this->addFieldMapping('field_contact_lastname', 'sec_lastname');
+  $this->addFieldMapping('field_contact_streetname', 'sec_streetname');
+  $this->addFieldMapping('field_contact_town', 'sec_town');
+  $this->addFieldMapping('field_contact_postcode', 'sec_postcode');
+  $this->addFieldMapping('field_contact_email', 'sec_email');
+  $this->addFieldMapping('field_contact_phone', 'sec_phone');
+  $this->addFieldMapping('field_contact_mobile', 'sec_mobile');
+  $this->addFieldMapping('field_contact_skype', 'sec_skype');
   $this->addFieldMapping('field_original_organisation_id', 'contact_id')
        ->sourceMigration(array('Organisations'));
 
