@@ -13,7 +13,7 @@ function migrate_vegwa_migrate_api() {
         'PriContact' => array('class_name' => 'PriContactMigration'),
         'SecContact' => array('class_name' => 'SecContactMigration'),
       ),
-      'field handlers' => array('MigrateEmailFieldHandler', 'MigrateLinkFieldHandler', 'MigrateEntityReferenceFieldHandler'),
+      'field handlers' => array('MigrateEmailFieldHandler', 'MigrateLinkFieldHandler', 'MigrateEntityReferenceFieldHandler', 'MigrateTextFieldHandler', 'MigrateValueFieldHandler'),
   );
   return $api;
 }
