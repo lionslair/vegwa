@@ -8,8 +8,6 @@ class OrganisationsMigration extends Migration {
 
   $this->description = t('Migrate data from the contact data into Organisations');
 
-
-
   $csv_file_path = variable_get('file_public_path', conf_path() . '/files/');
   // dpm(DRUPAL_ROOT .'/'. $csv_file_path);
   $this->source = new MigrateSourceCSV(DRUPAL_ROOT .'/'. $csv_file_path . '/contact_data.csv', $this->csvcolumns(), array('header_rows' => 1), $this->fields());
@@ -105,24 +103,40 @@ class OrganisationsMigration extends Migration {
     $crop_types = array();
     $hectares = array();
 
-  for ($i=1; $i <= 12; $i++) {
-    $key = "crop_type$i";
-    if (!empty($row->$key)) {
-      // $row->crop_types[] = $row->$key;
-      $crop_types[] = $row->$key;
+    for ($i=1; $i <= 12; $i++) {
+      $key = "crop_type$i";
+      if (!empty($row->$key)) {
+        // $row->crop_types[] = $row->$key;
+        $crop_types[] = $row->$key;
+      }
+
+      $key = "hectares$i";
+      if ($row->$key != '0.000') {
+        // $row->hectares[] = $row->$key;
+        $hectares[] = $row->$key;
+      }
     }
 
-    $key = "hectares$i";
-    if ($row->$key != '0.000') {
-      // $row->hectares[] = $row->$key;
-      $hectares[] = $row->$key;
-    }
+    if (empty($hectares)) { $hectares = array(0); }
+    $row->crop_types = implode(',', $crop_types);
+    $row->hectares = implode(',', $hectares);
   }
 
-  if (empty($hectares)) { $hectares = array(0); }
-  $row->crop_types = implode(',', $crop_types);
-  $row->hectares = implode(',', $hectares);
-}
+  protected function createStub(Migration $migration, array $source_id) {
+    $node = new stdClass();
+    $node->title = t('Stub for @id', array('@id' => $source_id[0]));
+    $node->body[LANGUAGE_NONE][0] = t('Stub body');
+    $node->type = $this->destination->getBundle();
+    $node->uid = 1;
+    $node->status = 0;
+    node_save($node);
+    if (isset($node->nid)) {
+      return array($node->nid);
+    }
+    else {
+      return FALSE;
+    }
+  }
 
   protected function csvcolumns() {
     $columns = array(
