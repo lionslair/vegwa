@@ -67,9 +67,18 @@ class SecContactMigration extends Migration {
     $this->addUnmigratedSources(array(), t('Do Not Migrate'));
   }
 
+  function complete($entity, stdClass $row) {
+    $organisation = node_load($entity->field_contact_organisation[LANGUAGE_NONE][0]['target_id']);
+
+    if ($organisation) {
+      $organisation->field_organisation_contact[LANGUAGE_NONE][1]['target_id'] = $entity->nid;
+      node_save($organisation);
+    }
+  }
+
   protected function createStub(Migration $migration, array $source_id) {
     $node = new stdClass();
-    $node->title = t('Stub for @id', array('@id' => $source_id[0]));
+    $node->title = t('Second Stub for @id', array('@id' => $source_id[0]));
     $node->body[LANGUAGE_NONE][0] = t('Stub body');
     $node->type = $this->destination->getBundle();
     $node->uid = 1;
