@@ -1,2 +1,53 @@
 <?php
 
+/**
+ * Alter the fields used to represent an entity in the IEF table.
+ *
+ * The fields can be either Field API fields or properties defined through
+ * hook_entity_property_info().
+ *
+ * @param $fields
+ *   The fields to alter.
+ * @param $context
+ *   An array with the following keys:
+ *   - parent_entity_type: The type of the parent entity.
+ *   - parent_bundle: The bundle of the parent entity.
+ *   - field_name: The name of the reference field on which IEF is operating.
+ *   - entity_type: The type of the referenced entities.
+ *   - allowed_bundles: Bundles allowed on the reference field.
+ *
+ * @see EntityInlineEntityFormController::tableFields()
+ */
+function vegwa_inline_entity_form_table_fields_alter(&$fields, $context) {
+  // IEF is managing products on a node form.
+  if ($context['parent_entity_type'] == 'node' && $context['parent_bundle'] == 'organisation' && $context['field_name'] == 'field_organisation_contact') {
+
+    unset($fields['status'], $fields['title']);
+
+    $fields['field_contact_firstname'] = array(
+      'type' => 'property',
+      'label' => t('First Name'),
+      'weight' => 1,
+    );
+    $fields['field_contact_lastname'] = array(
+      'type' => 'property',
+      'label' => t('Last Name'),
+      'weight' => 2,
+    );
+    $fields['field_contact_email'] = array(
+      'type' => 'field',
+      'label' => t('Email'),
+      'weight' => 3,
+    );
+    $fields['field_contact_phone'] = array(
+      'type' => 'field',
+      'label' => t('Phone'),
+      'weight' => 4,
+    );
+    $fields['field_contact_mobile'] = array(
+      'type' => 'field',
+      'label' => t('Mobile'),
+      'weight' => 5,
+    );
+  }
+}
