@@ -32,6 +32,8 @@ function vegwa_organisations_contacts_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -179,7 +181,7 @@ function vegwa_organisations_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_contact_organisation']['table'] = 'field_data_field_contact_organisation';
   $handler->display->display_options['fields']['field_contact_organisation']['field'] = 'field_contact_organisation';
   $handler->display->display_options['fields']['field_contact_organisation']['settings'] = array(
-    'link' => 0,
+    'link' => 1,
   );
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
@@ -358,6 +360,8 @@ function vegwa_organisations_contacts_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -484,15 +488,6 @@ function vegwa_organisations_contacts_views_default_views() {
   $handler->display->display_options['footer']['result']['table'] = 'views';
   $handler->display->display_options['footer']['result']['field'] = 'result';
   $handler->display->display_options['footer']['result']['empty'] = TRUE;
-  /* Field: Content: Original Organisation ID */
-  $handler->display->display_options['fields']['field_original_organisation_id']['id'] = 'field_original_organisation_id';
-  $handler->display->display_options['fields']['field_original_organisation_id']['table'] = 'field_data_field_original_organisation_id';
-  $handler->display->display_options['fields']['field_original_organisation_id']['field'] = 'field_original_organisation_id';
-  $handler->display->display_options['fields']['field_original_organisation_id']['label'] = 'Original ID';
-  $handler->display->display_options['fields']['field_original_organisation_id']['settings'] = array(
-    'thousand_separator' => ' ',
-    'prefix_suffix' => 1,
-  );
   /* Field: Content: Organisation */
   $handler->display->display_options['fields']['field_organisation']['id'] = 'field_organisation';
   $handler->display->display_options['fields']['field_organisation']['table'] = 'field_data_field_organisation';
@@ -575,22 +570,6 @@ function vegwa_organisations_contacts_views_default_views() {
     'organisation' => 'organisation',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Original Organisation ID (field_original_organisation_id) */
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['id'] = 'field_original_organisation_id_value';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['table'] = 'field_data_field_original_organisation_id';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['field'] = 'field_original_organisation_id_value';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['operator_id'] = 'field_original_organisation_id_value_op';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['label'] = 'Original Organisation ID';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['operator'] = 'field_original_organisation_id_value_op';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['identifier'] = 'field_original_organisation_id_value';
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_original_organisation_id_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-  );
   /* Filter criterion: Content: Organisation (field_organisation) */
   $handler->display->display_options['filters']['field_organisation_value']['id'] = 'field_organisation_value';
   $handler->display->display_options['filters']['field_organisation_value']['table'] = 'field_data_field_organisation';
