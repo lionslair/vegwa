@@ -501,17 +501,6 @@ function vegwa_organisations_contacts_views_default_views() {
   $handler->display->display_options['fields']['field_crop_type']['table'] = 'field_data_field_crop_type';
   $handler->display->display_options['fields']['field_crop_type']['field'] = 'field_crop_type';
   $handler->display->display_options['fields']['field_crop_type']['delta_offset'] = '0';
-  /* Field: Content: Hectares */
-  $handler->display->display_options['fields']['field_hectares']['id'] = 'field_hectares';
-  $handler->display->display_options['fields']['field_hectares']['table'] = 'field_data_field_hectares';
-  $handler->display->display_options['fields']['field_hectares']['field'] = 'field_hectares';
-  $handler->display->display_options['fields']['field_hectares']['settings'] = array(
-    'thousand_separator' => ' ',
-    'decimal_separator' => '.',
-    'scale' => '3',
-    'prefix_suffix' => 1,
-  );
-  $handler->display->display_options['fields']['field_hectares']['delta_offset'] = '0';
   /* Field: Content: Email */
   $handler->display->display_options['fields']['field_organisation_email']['id'] = 'field_organisation_email';
   $handler->display->display_options['fields']['field_organisation_email']['table'] = 'field_data_field_organisation_email';
