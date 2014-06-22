@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VegWA Organisations Contacts feature.
+ */
+
+include_once 'vegwa_organisations_contacts.features.inc';
